@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up</title>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
-
-<body>
-  <%- include('../partials/_navbar.ejs') %>
-    <h1>Create a new account!</h1>
-
-    <form action="/auth/sign-up" method="POST">
-      <label for="username">Username:</label>
-      <input type="text" name="username" id="username" required />
-      <label for="password">Password:</label>
-      <input type="password" name="password" id="password" required />
-      <label for="confirmPassword">Confirm Password:</label>
-      <input type="password" name="confirmPassword" id="confirmPassword" required />
-      <button type="submit">Sign up</button>
+<body class="bg-white text-black">
+  <%- include('../partials/_navbar') %>
+  <div class="container mx-auto mt-10">
+    <h1 class="text-4xl font-bold">Create a New Account</h1>
+    <form action="/auth/sign-up" method="POST" class="mt-4">
+      <label for="username" class="block text-grey-light">Username:</label>
+      <input type="text" name="username" id="username" required class="border p-2 w-full">
+      <label for="password" class="block text-grey-light mt-4">Password:</label>
+      <input type="password" name="password" id="password" required class="border p-2 w-full">
+      <label for="confirmPassword" class="block text-grey-light mt-4">Confirm Password:</label>
+      <input type="password" name="confirmPassword" id="confirmPassword" required class="border p-2 w-full">
+      <button type="submit" class="mt-4 bg-primary text-white px-4 py-2 rounded">Sign Up</button>
     </form>
+  </div>
 </body>
-
 </html>

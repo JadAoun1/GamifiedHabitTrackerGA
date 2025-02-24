@@ -12,9 +12,16 @@ router.get('/sign-in', (req, res) => {
   res.render('auth/sign-in.ejs');
 });
 
-router.get('/sign-out', (req, res) => {
-  req.session.destroy();
-  res.redirect('/');
+// Updated logout route
+router.get('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      console.log('Error destroying session:', err);
+      // Optionally, you can redirect to a fallback page
+      return res.redirect('/habits');
+    }
+    res.redirect('/');
+  });
 });
 
 router.post('/sign-up', async (req, res) => {
@@ -63,8 +70,7 @@ router.post('/sign-in', async (req, res) => {
     }
 
     // There is a user AND they had the correct password. Time to make a session!
-    // Avoid storing the password, even in hashed format, in the session
-    // If there is other data you want to save to `req.session.user`, do so here!
+    // Avoid storing the password in the session.
     req.session.user = {
       username: userInDatabase.username,
       _id: userInDatabase._id

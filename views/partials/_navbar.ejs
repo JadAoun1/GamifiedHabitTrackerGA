@@ -1,9 +1,15 @@
-<nav>
-    <% if(user) { %>
-        <a href="/users/<%= user._id %>/applications">Your Apps</a>
-        <a href="/auth/sign-out">Sign Out</a>
-        <% } else { %>
-            <a href="/auth/sign-in">Sign In</a>
-            <a href="/auth/sign-up">Sign Up</a>
-            <% } %>
+<nav class="bg-grey-dark p-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <a href="/" class="text-black font-bold">Habit Tracker</a>
+    <div>
+      <% if (currentUser) { %>
+        <span class="text-grey-light px-3">Welcome, <%= currentUser.username %>!</span>
+        <a href="/habits" class="text-grey-light hover:text-white px-3">My Habits</a>
+        <a href="/auth/logout" class="text-grey-light hover:text-white px-3">Sign Out</a>
+      <% } else { %>
+        <a href="/auth/sign-in" class="text-black hover:text-grey-light px-3">Sign In</a>
+        <a href="/auth/sign-up" class="text-black hover:text-grey-light px-3">Sign Up</a>
+      <% } %>
+    </div>
+  </div>
 </nav>

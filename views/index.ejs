@@ -1,17 +1,27 @@
-<!-- views/index.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Skyrockit</title>
-  </head>
-  <body>
-    <%- include('../partials/_navbar.ejs') %> 
-    <h1>Skyrockit</h1>
-    <p>A job application tracker.</p>
-    <a href="/auth/sign-up">Sign up</a>
-    <a href="/auth/sign-in">Sign in</a>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/styles.css">
+  <title>Gamified Habit Tracker</title>
+</head>
+<body class="bg-gray-100">
+  <%- include('partials/_navbar') %>
+  <div class="container mx-auto mt-10 text-center">
+    <h1 class="text-4xl font-bold">Welcome to Gamified Habit Tracker</h1>
+    <p class="mt-4 text-lg">
+      Track your habits, earn points, and level up your life! Stay motivated by turning daily tasks into a fun, rewarding challenge.
+    </p>
+    <div class="mt-8">
+      <% if (currentUser) { %>
+        <a href="/habits" class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600">View Your Habits</a>
+      <% } else { %>
+        <a href="/auth/sign-up" class="bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600">Sign Up</a>
+        <span class="mx-4">or</span>
+        <a href="/auth/sign-in" class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600">Sign In</a>
+      <% } %>
+    </div>
+  </div>
+</body>
 </html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/styles.css">
+  <title>Your Habits</title>
+</head>
+<body class="bg-white text-black">
+  <%- include('../partials/_navbar') %>
+  <div class="container mx-auto mt-10">
+    <h1 class="text-3xl font-bold">Your Habits</h1>
+    <% if (habits && habits.length) { %>
+      <ul class="mt-4">
+        <% habits.forEach(function(habit) { %>
+          <li class="border p-4 mb-2">
+            <a href="/habits/<%= habit._id %>" class="text-xl font-semibold text-black">
+              <%= habit.title %>
+            </a>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p class="mt-4 text-lg text-grey-light">You haven't added any habits yet.</p>
+    <% } %>
+    <a href="/habits/new" class="mt-6 inline-block bg-primary text-white px-4 py-2 rounded">Add New Habit</a>
+  </div>
+</body>
+</html>

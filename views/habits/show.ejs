@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/styles.css">
+  <title><%= habit.title %></title>
+</head>
+<body class="bg-white text-black">
+  <%- include('../partials/_navbar') %>
+  <div class="container mx-auto mt-10">
+    <h1 class="text-3xl font-bold"><%= habit.title %></h1>
+    <p class="mt-4"><%= habit.description %></p>
+    <p class="mt-2">Frequency: <%= habit.frequency %></p>
+    <p class="mt-2">Points: <%= habit.points %></p>
+    <div class="mt-4">
+      <a href="/habits/<%= habit._id %>/edit" class="bg-primary text-white px-4 py-2 rounded">Edit</a>
+      <form action="/habits/<%= habit._id %>?_method=DELETE" method="POST" class="inline-block">
+        <button type="submit" class="bg-primary text-white px-4 py-2 rounded">Delete</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

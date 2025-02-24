@@ -1,5 +1,5 @@
 //////////////
-//DEPENDENCIES
+// DEPENDENCIES
 //////////////
 
 const dotenv = require('dotenv');
@@ -10,11 +10,14 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 const session = require('express-session');
+const path = require('path');
+
 const isSignedIn = require('./middleware/is-signed-in.js');
 const passUserToView = require('./middleware/pass-user-to-view.js');
 const authController = require('./controllers/auth.js');
-const applicationsController = require('./controllers/applications.js');
-const port = process.env.PORT ? process.env.PORT : '3000';
+// We still have the habits controller that handles CRUD for habits
+const habitsController = require('./controllers/habits.js');
+const port = process.env.PORT || '3000';
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -22,13 +25,17 @@ mongoose.connection.on('connected', () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
+// Set the view engine and views folder
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 ////////////
-//MIDDLEWARE
+// MIDDLEWARE
 ////////////
 
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
+app.use(express.static('public'));
 
 // app.use(morgan('dev'));
 app.use(
@@ -39,30 +46,28 @@ app.use(
   })
 );
 
-
-app.use(passUserToView); // use new passUserToView middleware here
-
+app.use(passUserToView);
 
 ////////
-//ROUTES
+// ROUTES
 ////////
 
+// Home route
 app.get('/', (req, res) => {
-  // Check if the user is signed in
+  // If the user is signed in, redirect them to the habits page
   if (req.session.user) {
-    // Redirect signed-in users to their applications index
-    res.redirect(`/users/${req.session.user._id}/applications`);
+    res.redirect('/habits');
   } else {
-    // Show the homepage for users who are not signed in
-    res.render('index.ejs');
+    // Otherwise, show the public home page
+    res.render('index');
   }
 });
 
 app.use('/auth', authController);
-app.use(isSignedIn); // use new isSignedIn middleware here
-app.use('/users/:userId/applications', applicationsController); // New!
+app.use(isSignedIn); // All routes below require a signed-in user
 
-
+// Mount habits controller so that it handles routes under /habits
+app.use('/habits', habitsController);
 
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);
