@@ -24,11 +24,11 @@
     "express-session": "^1.17.3",
     "method-override": "^3.0.0",
     "mongoose": "^8.0.1",
-    "morgan": "^1.10.0"
-  },
-  "devDependencies": {
+    "morgan": "^1.10.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.2.7"
   }
+
+  
 }
