@@ -58,6 +58,6 @@ Habit Tracker is a full-stack web application built on the MEN stack (MongoDB, E
 - [MongoDB](https://www.mongodb.com/) for the database.
 
 ## Project Planning Materials
-[View Notes](Project Proposal For Final Approval.txt)
+[View Notes](./Project Proposal For Final Approval.txt)
 
 
