@@ -1,0 +1,156 @@
+1. Project Idea
+
+Gamified Habit Tracker  
+
+A web application that allows users to create and manage personal habits, track daily/weekly completions, and earn points or “XP” for staying consistent. The app also features streak tracking, and optionally a leaderboard or personal score display. Once a user logs in, they land on a unified dashboard page with a sidebar and main content area (populated via partials) that shows their habits, stats, and forms to create/edit habits.
+
+Key Features
+
+- User Authentication: New users can register and existing users can log in.  
+- Dashboard: A single-page dashboard (once logged in) with a sidebar for navigation and a main content area for viewing/modifying habits, progress, and scores.  
+- Habit Creation & Management: Users can create habits with a name, frequency (daily, weekly, etc.), and optionally a description or category.  
+- Completion Tracking: Each day or week, a user checks off completion for that habit, which increases streak count and XP.  
+- Streaks & XP: Keep track of how many consecutive days/weeks a user has maintained a habit. Award XP to reflect progress and provide motivation.  
+- Optional Scoreboard/Leaderboard: Display user rankings or personal stats in a scoreboard partial.
+
+
+
+
+2. RESTful Routes
+
+
+Auth Routes
+
+| Method | Endpoint       | Description                                                          |
+|-------:|----------------|----------------------------------------------------------------------|
+| GET  | /login       | Renders the login form (login.ejs).                                      |
+| POST | /login       | Authenticates user, creates session, redirects to /dashboard.            |
+| GET  | /register    | Renders the registration form (register.ejs).                            |
+| POST | /register    | Creates a new user, redirects to /login.                                 |
+| GET  | /logout      | Logs out the user, destroys session, redirects to /login.                |
+
+Dashboard (Main App) Routes
+
+| Method | Endpoint                             | Description                                                                                                                                         |
+|-------:|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| GET  | /dashboard                         | Renders dashboard.ejs with a default/overview partial (e.g., partials/overview.ejs) if you wish, or simply a welcome. Checks session for user.  |
+| GET  | /dashboard/habits                  | Renders dashboard.ejs with the partials/habitsList.ejs partial (displays all user habits).                                                      |
+| GET  | /dashboard/habits/new              | Renders dashboard.ejs with partials/habitForm.ejs in "create" mode.                                                                             |
+| POST | /dashboard/habits                  | Processes creation of a new habit, then redirects to /dashboard/habits.                                                                         |
+| GET  | /dashboard/habits/:id              | Renders dashboard.ejs with partials/habitDetails.ejs for a specific habit (shows streak, completions, etc.).                                    |
+| GET  | /dashboard/habits/:id/edit         | Renders dashboard.ejs with partials/habitForm.ejs in "edit" mode for a specific habit.                                                          |
+| PUT  | /dashboard/habits/:id              | Updates a habit in the database, then redirects to /dashboard/habits/:id.                                                                       |
+| DELETE| /dashboard/habits/:id             | Deletes a habit, then redirects to /dashboard/habits.                                                                                           |
+| POST | /dashboard/habits/:id/complete     | Marks a habit as completed for the day/week, increments streak/XP, then redirects back to /dashboard/habits/:id.                                |
+| GET  | /dashboard/scoreboard (optional)   | Renders dashboard.ejs with partials/scoreboard.ejs to display user’s XP or a global leaderboard.                                                |
+
+
+
+
+3. User Stories
+
+1. Registration & Login  
+   - As a new user, I want to create an account so I can securely log in and track my habits.  
+   - As a returning user, I want to log in so I can view and update my habits and progress.
+
+2. Dashboard & Navigation  
+   - As a logged-in user, I want to see a sidebar with quick links (Habits, Scoreboard, Logout) so I can easily navigate the app.  
+   - As a logged-in user, I want to see my most important stats (like total XP and current streaks) on the main dashboard screen.
+
+3. Habit Creation & Management  
+   - As a user, I want to create new habits with a name and frequency, so I can begin tracking them.  
+   - As a user, I want to see a list of all my habits, so I can quickly choose which to check off for the day.  
+   - As a user, I want to edit or delete habits, so I can keep my habit list up to date.
+
+4. Tracking Completions & Streaks  
+   - As a user, I want to mark a habit as completed for the current day (or week), so I can maintain my streak.  
+   - As a user, I want to see my streak and how many consecutive days/weeks I’ve completed a habit, so I feel motivated to continue.
+
+5. Gamification  
+   - As a user, I want to earn XP or points each time I complete a habit, so I’m incentivized to keep going.  
+   - As a user, I want to see my total XP on my dashboard, so I can track my overall progress.
+
+6. Optional: Scoreboard/Leaderboard  
+   - As a user, I want to compare my progress with other users (or see a personal scoreboard), so I have extra motivation to stick with my habits.
+
+
+
+
+4. ERD (Entity Relationship Diagram)
+
+
+- User (1) — (M) Habit: Each user can have many habits.  
+- Habit (1) — (M) Completion: Each habit can have many completion entries (one per day/week).  
+
+
+┌───────────────┐       ┌───────────────┐
+│    User       │             │    Habit      │
+│---------------│             │---------------│
+│ _id (ObjectId)│   1 to Many │ _id (ObjectId)│
+│ username      │   -------   │ name          │
+│ email         │             │ frequency     │
+│ passwordHash  │             │ createdAt     │
+│ totalXP       │             │ userId (ref)  │
+└───────────────┘       └───────────────┘
+                        |
+                     1 to Many
+                        |
+                ┌───────────────┐
+                │  Completion   │
+                │---------------│
+                │ _id (ObjectId)│
+                │ habitId (ref) │
+                │ date          │
+                │ xpEarned      │
+                │ streakCount   │ 
+                └───────────────┘
+
+- User: Stores user credentials and totalXP (or you might store XP in a separate doc, but typically it’s fine here).
+- Habit: Includes the userId reference to the user who owns the habit, plus details like name, frequency, etc.
+- Completion: Each entry references the specific habitId to track daily completions. This could store how much XP was awarded, or you can compute the XP on the fly.
+
+
+
+
+5. Wireframe
+
+
++-------------------------------+                +-------------------------------+
+|    Login Page (login.ejs)     |                | Register Page (register.ejs)  |
+|-------------------------------|                |-------------------------------|
+| [ App Name ]                  |                | [ App Name ]                  |
+|                               |                |                               |
+|  +-------------------------+  |   Register? -> |  +-------------------------+  |
+|  |  Enter Email            |  |                |  |  Enter Email            |  |
+|  +-------------------------+  |                |  +-------------------------+  |
+|  +-------------------------+  |                |  +-------------------------+  |
+|  |  Enter Password         |  |                |  |  Choose Password        |  |
+|  +-------------------------+  |                |  +-------------------------+  |
+|      [ Login Button ]         |                |      [ Register Button ]      |
++---------------+---------------+                +---------------+---------------+
+
+Once logged in ->
+
++-----------------------------------------------------------------------------------+
+|                          dashboard.ejs                                            |
+|-----------------------------------------------------------------------------------|
+|  +---------------------------+  +-----------------------------------------------+ |
+|  |   sidebar.ejs            |  |  Main Content Area:                            | |
+|  |--------------------------|  |                                                | |
+|  |  - Habits                |  |   1. partials/overview.ejs                     | |
+|  |  - Scoreboard            |  |   2. partials/habitsList.ejs                   | |
+|  |  - Logout                |  |   3. partials/habitForm.ejs                    | |
+|  |                          |  |   4. partials/habitDetails.ejs                 | |
+|  +---------------------------+  +-----------------------------------------------+ |
+|                                                                                   |
++-----------------------------------------------------------------------------------+
+
+1. Login/Register Pages: Standalone views.  
+2. Dashboard: Has a sidebar partial with links (Habits, Scoreboard, Logout).  
+3. Content Area: Dynamically loads partials:
+   - habitsList.ejs: Display all habits.  
+   - habitForm.ejs: Create or edit a habit.  
+   - habitDetails.ejs: Show streaks, completions, etc.  
+   - scoreboard.ejs (optional).  
+   - overview.ejs (optional landing section on the dashboard).
+
