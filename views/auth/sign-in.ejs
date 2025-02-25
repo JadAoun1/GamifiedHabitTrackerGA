@@ -1,22 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In</title>
-  <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body class="bg-white text-black">
-  <%- include('../partials/_navbar') %>
-  <div class="container mx-auto mt-10">
-    <h1 class="text-4xl font-bold">Sign In</h1>
-    <form action="/auth/sign-in" method="POST" class="mt-4">
-      <label for="username" class="block text-grey-light">Username:</label>
-      <input type="text" name="username" id="username" required class="border p-2 w-full">
-      <label for="password" class="block text-grey-light mt-4">Password:</label>
-      <input type="password" name="password" id="password" required class="border p-2 w-full">
-      <button type="submit" class="mt-4 bg-primary text-white px-4 py-2 rounded">Sign In</button>
-    </form>
-  </div>
-</body>
+<html lang="en" class="h-full bg-white">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In - Gamified Habit Tracker</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body class="h-full bg-white">
+    <%- include('../partials/_navbar') %>
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-black">
+          Sign in to your account
+        </h2>
+      </div>
+
+      <!-- Form container -->
+      <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form class="space-y-6" action="/auth/sign-in" method="POST">
+          <div>
+            <label for="email" class="block text-sm font-medium text-black">
+              Username
+            </label>
+            <div class="mt-2">
+              <input 
+                type="username" 
+                name="username" 
+                id="username" 
+                autocomplete="username" 
+                required 
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-black border border-grey-light placeholder:text-grey-light focus:outline-2 focus:outline-primary sm:text-sm"
+              />
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between">
+              <label for="password" class="block text-sm font-medium text-black">
+                Password
+              </label>
+              <div class="text-sm">
+                <a href="#" class="font-semibold text-primary hover:text-primary">
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+            <div class="mt-2">
+              <input 
+                type="password" 
+                name="password" 
+                id="password" 
+                autocomplete="current-password" 
+                required 
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-black border border-grey-light placeholder:text-grey-light focus:outline-2 focus:outline-primary sm:text-sm"
+              />
+            </div>
+          </div>
+
+          <div>
+            <button 
+              type="submit" 
+              class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-white shadow hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+
+        <p class="mt-10 text-center text-sm text-black">
+          Not a member?
+          <a href="/auth/sign-up" class="font-semibold text-primary hover:text-primary">
+            Create an account
+          </a>
+        </p>
+      </div>
+    </div>
+  </body>
 </html>

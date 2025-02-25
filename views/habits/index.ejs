@@ -13,9 +13,12 @@
     <% if (habits && habits.length) { %>
       <ul class="mt-4">
         <% habits.forEach(function(habit) { %>
-          <li class="border p-4 mb-2">
+          <li class="border p-4 mb-2 flex justify-between items-center">
             <a href="/habits/<%= habit._id %>" class="text-xl font-semibold text-black">
               <%= habit.title %>
+            </a>
+            <a href="/habits/<%= habit._id %>/edit" class="ml-4 text-sm font-medium text-primary hover:underline">
+              Edit
             </a>
           </li>
         <% }); %>
@@ -23,7 +26,9 @@
     <% } else { %>
       <p class="mt-4 text-lg text-grey-light">You haven't added any habits yet.</p>
     <% } %>
-    <a href="/habits/new" class="mt-6 inline-block bg-primary text-white px-4 py-2 rounded">Add New Habit</a>
+    <a href="/habits/new" class="mt-6 inline-block bg-primary text-white px-4 py-2 rounded">
+      Add New Habit
+    </a>
   </div>
 </body>
 </html>
