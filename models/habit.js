@@ -1,12 +1,17 @@
+// models/habit.js
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const habitSchema = new Schema({
   title: { type: String, required: true },
   description: String,
-  frequency: { type: String, enum: ['daily', 'weekly', 'monthly'], required: true },
-  points: { type: Number, default: 0 },
-  user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
+  frequency: { 
+    type: String, 
+    enum: ['daily', 'weekly', 'monthly'], 
+    required: true 
+  },
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  checkIns: [{ type: Date }]  
 }, {
   timestamps: true
 });

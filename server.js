@@ -15,7 +15,7 @@ const path = require('path');
 const isSignedIn = require('./middleware/is-signed-in.js');
 const passUserToView = require('./middleware/pass-user-to-view.js');
 const authController = require('./controllers/auth.js');
-// We still have the habits controller that handles CRUD for habits
+const goalsController = require('./controllers/goals');
 const habitsController = require('./controllers/habits.js');
 const port = process.env.PORT || '3000';
 
@@ -36,6 +36,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
+app.use('/goals', goalsController);
+
 
 // app.use(morgan('dev'));
 app.use(

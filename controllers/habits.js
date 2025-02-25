@@ -3,23 +3,29 @@ const router = express.Router();
 const Habit = require('../models/habit');
 const Activity = require('../models/activity');
 const isSignedIn = require('../middleware/is-signed-in');
+const Goal = require('../models/goal');
 
 // GET /habits - List all habits and render the dashboard with recent activity etc.
 router.get('/', isSignedIn, async (req, res) => {
   try {
-    const habits = await Habit.find({ user: req.session.user._id });
-    // Fetch recent activity for this user, sorted by most recent
+    let habits = await Habit.find({ user: req.session.user._id });
+    habits = habits.map(habit => {
+      if (habit.checkIns && habit.checkIns.length) {
+        habit.streak = 1; 
+      } else {
+        habit.streak = 0;
+      }
+      return habit;
+    });
+    const upcomingGoalsData = await Goal.find({ user: req.session.user._id }).sort({ createdAt: -1 });
     const recentActivityData = await Activity.find({ user: req.session.user._id }).sort({ createdAt: -1 });
-    // For achievements and upcoming goals, use empty arrays for now (or fetch if available)
-    const achievementsData = [];
-    const upcomingGoalsData = [];
-
-    res.render('habits/index', { 
-      habits, 
+    
+    res.render('habits/index', {
+      habits,
       recentActivity: recentActivityData,
-      achievements: achievementsData,
-      upcomingGoals: upcomingGoalsData,
-      currentUser: req.session.user 
+      achievements: [],
+      upcomingGoals: upcomingGoalsData,  // Passing goals as upcomingGoals
+      currentUser: req.session.user
     });
   } catch (error) {
     console.error(error);
@@ -51,6 +57,21 @@ router.post('/', isSignedIn, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.redirect('/habits/new');
+  }
+});
+
+// POST /habits/goals - Create a new goal for the current user
+router.post('/goals', isSignedIn, async (req, res) => {
+  try {
+    const goalData = {
+      user: req.session.user._id,
+      text: req.body.goal  // ensure your form input is named "goal"
+    };
+    await Goal.create(goalData);
+    res.redirect('/habits');
+  } catch (error) {
+    console.error("Error creating goal:", error);
+    res.redirect('/habits');
   }
 });
 
@@ -109,6 +130,45 @@ router.put('/:id', isSignedIn, async (req, res) => {
     });
 
     res.redirect(`/habits/${req.params.id}`);
+  } catch (error) {
+    console.error(error);
+    res.redirect('/habits');
+  }
+});
+
+// POST /habits/:id/checkin - Check in to a habit
+router.post('/:id/checkin', isSignedIn, async (req, res) => {
+  try {
+    const habit = await Habit.findById(req.params.id);
+    if (!habit || habit.user.toString() !== req.session.user._id.toString()) {
+      return res.redirect('/habits');
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const lastCheckIn = habit.checkIns[habit.checkIns.length - 1];
+    if (lastCheckIn) {
+      const lastDate = new Date(lastCheckIn);
+      lastDate.setHours(0, 0, 0, 0);
+      if (today.getTime() === lastDate.getTime()) {
+        // Already checked in today for a daily habit.
+        return res.redirect('/habits');
+      }
+    }
+
+    habit.checkIns.push(new Date());
+    await habit.save();
+
+    // Log check-in activity
+    await Activity.create({
+      user: req.session.user._id,
+      action: 'Checked In',
+      habit: habit._id,
+      description: `Checked in to habit: ${habit.title}`
+    });
+
+    res.redirect('/habits');
   } catch (error) {
     console.error(error);
     res.redirect('/habits');
