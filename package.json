@@ -6,7 +6,7 @@
   "scripts": {
     "tailwind:build": "tailwindcss -i ./public/css/tailwind.css -o ./public/css/styles.css --watch",
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "npm start"
   },
   "repository": {
     "type": "git",
