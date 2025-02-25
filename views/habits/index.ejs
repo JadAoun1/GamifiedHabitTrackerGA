@@ -1,34 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/styles.css">
-  <title>Your Habits</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <title>Dashboard - Your Habits</title>
 </head>
+
 <body class="bg-white text-black">
   <%- include('../partials/_navbar') %>
-  <div class="container mx-auto mt-10">
-    <h1 class="text-3xl font-bold">Your Habits</h1>
-    <% if (habits && habits.length) { %>
-      <ul class="mt-4">
-        <% habits.forEach(function(habit) { %>
-          <li class="border p-4 mb-2 flex justify-between items-center">
-            <a href="/habits/<%= habit._id %>" class="text-xl font-semibold text-black">
-              <%= habit.title %>
-            </a>
-            <a href="/habits/<%= habit._id %>/edit" class="ml-4 text-sm font-medium text-primary hover:underline">
-              Edit
-            </a>
-          </li>
-        <% }); %>
-      </ul>
-    <% } else { %>
-      <p class="mt-4 text-lg text-grey-light">You haven't added any habits yet.</p>
-    <% } %>
-    <a href="/habits/new" class="mt-6 inline-block bg-primary text-white px-4 py-2 rounded">
-      Add New Habit
-    </a>
-  </div>
+    <div class="container mx-auto mt-10 px-4">
+      <h1 class="text-3xl font-bold mb-6">Dashboard</h1>
+      <div class="grid gap-6 grid-cols-1 lg:grid-cols-3">
+        <!-- Main Section: Habits List (spanning 2 columns on large screens) -->
+        <div class="lg:col-span-2 bg-grey-light p-6 rounded shadow">
+          <h2 class="text-2xl font-bold mb-4">Your Habits</h2>
+          <% if (habits && habits.length) { %>
+            <ul class="space-y-4">
+              <% habits.forEach(function(habit) { %>
+                <li class="border p-4 flex flex-col md:flex-row md:justify-between md:items-center">
+                  <div>
+                    <a href="/habits/<%= habit._id %>" class="text-xl font-semibold text-black">
+                      <%= habit.title %>
+                    </a>
+                    <p class="mt-2 text-sm text-grey-dark">
+                      <%= habit.description %>
+                    </p>
+                    <p class="mt-1 text-sm text-grey-dark">
+                      Frequency: <%= habit.frequency %>
+                    </p>
+                  </div>
+                  <div class="mt-4 md:mt-0 flex space-x-4">
+                    <a href="/habits/<%= habit._id %>/edit" class="text-sm font-medium text-primary hover:underline">
+                      Edit
+                    </a>
+                    <form action="/habits/<%= habit._id %>?_method=DELETE" method="POST">
+                      <button type="submit" class="text-sm font-medium text-red-600 hover:underline">
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                </li>
+                <% }); %>
+            </ul>
+            <% } else { %>
+              <p class="text-lg text-grey-light">You haven't added any habits yet.</p>
+              <% } %>
+                <a href="/habits/new" class="mt-6 inline-block bg-primary text-white px-4 py-2 rounded">
+                  Add New Habit
+                </a>
+        </div>
+
+        <!-- Profile Summary -->
+        <div class="bg-grey-light p-6 rounded shadow">
+          <h2 class="text-xl font-bold mb-4">Profile Summary</h2>
+          <% if (currentUser) { %>
+            <p class="mb-2">Username: <span class="font-semibold">
+                <%= currentUser.username %>
+              </span></p>
+            <p class="mb-2">Total Habits: <span class="font-semibold">
+                <%= habits ? habits.length : 0 %>
+              </span></p>
+            <!-- Add additional profile details here -->
+            <% } else { %>
+              <p>Please sign in to view your profile.</p>
+              <% } %>
+        </div>
+        <!-- Recent Activity -->
+        <div class="bg-grey-light p-6 rounded shadow">
+          <h2 class="text-xl font-bold mb-4">Recent Activity</h2>
+          <!-- Placeholder for recent activity; you can map over an activity array if available -->
+          <p class="text-grey-dark">No recent activity.</p>
+        </div>
+        <!-- Achievements -->
+        <div class="bg-grey-light p-6 rounded shadow">
+          <h2 class="text-xl font-bold mb-4">Achievements</h2>
+          <!-- Placeholder for achievements -->
+          <p class="text-grey-dark">No achievements yet.</p>
+        </div>
+        <!-- Upcoming Goals -->
+        <div class="bg-grey-light p-6 rounded shadow">
+          <h2 class="text-xl font-bold mb-4">Upcoming Goals</h2>
+          <!-- Placeholder for upcoming goals -->
+          <p class="text-grey-dark">No upcoming goals.</p>
+        </div>
+      </div>
+    </div>
 </body>
+
 </html>

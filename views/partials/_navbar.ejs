@@ -1,15 +1,73 @@
-<nav class="bg-white p-4">
-  <div class="container mx-auto flex justify-between items-center">
-    <a href="/" class="text-black font-bold">Habit Tracker</a>
-    <div>
-      <% if (currentUser) { %>
-        <span class="text-grey-light px-3">Welcome, <%= currentUser.username %>!</span>
-        <a href="/habits" class="text-grey-light hover:text-white px-3">My Habits</a>
-        <a href="/auth/logout" class="text-grey-light hover:text-white px-3">Sign Out</a>
-      <% } else { %>
-        <a href="/auth/sign-in" class="text-black hover:text-grey-light px-3">Sign In</a>
-        <a href="/auth/sign-up" class="text-black hover:text-grey-light px-3">Sign Up</a>
-      <% } %>
+<nav class="bg-white shadow-sm">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="relative flex h-16 justify-between">
+      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+        <div class="flex shrink-0 items-center">
+          <a href="/" class="text-black font-bold">Habit Tracker</a>
+        </div>
+        <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+          <a href="/habits"
+            class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-black hover:border-primary hover:text-primary">
+            My Habits
+          </a>
+        </div>
+      </div>
+      <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+        <% if (currentUser) { %>
+          <!-- Profile dropdown -->
+          <div class="relative ml-3">
+            <div>
+              <button type="button" id="user-menu-button"
+                class="relative flex rounded-full bg-white text-sm focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:outline-none">
+                <span class="sr-only">Open user menu</span>
+                <img class="h-8 w-8 rounded-full" src="https://via.placeholder.com/150"
+                  alt="<%= currentUser.username %>'s profile">
+              </button>
+            </div>
+            <!-- Dropdown menu (hidden by default) -->
+            <div id="user-dropdown"
+              class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
+              style="display: none;">
+              <p class="block px-4 py-2 text-sm text-gray-500">Welcome, <%= currentUser.username %>!</p>
+              <a href="/habits" class="block px-4 py-2 text-sm text-black hover:bg-gray-100">My Habits</a>
+              <a href="/auth/logout" class="block px-4 py-2 text-sm text-black hover:bg-gray-100">Sign Out</a>
+            </div>
+          </div>
+          <% } else { %>
+            <div class="flex space-x-4">
+              <a href="/auth/sign-in" class="px-3 py-2 text-sm font-medium text-black hover:text-primary">Sign In</a>
+              <a href="/auth/sign-up" class="px-3 py-2 text-sm font-medium text-black hover:text-primary">Sign Up</a>
+            </div>
+            <% } %>
+      </div>
     </div>
   </div>
+
 </nav>
+
+<!-- Script to handle dropdown toggle and click outside behavior -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const button = document.getElementById('user-menu-button');
+    const dropdown = document.getElementById('user-dropdown');
+
+    if (button) {
+      // Toggle dropdown on button click
+      button.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+          dropdown.style.display = 'block';
+        } else {
+          dropdown.style.display = 'none';
+        }
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function (e) {
+        if (!button.contains(e.target)) {
+          dropdown.style.display = 'none';
+        }
+      });
+    }
+  });
+</script>
