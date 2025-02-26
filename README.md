@@ -27,14 +27,8 @@ Habit Tracker is a full-stack web application built on the MEN stack (MongoDB, E
   - bcrypt
 
 - **Front-End:**  
-  - EJS Templates
+  - EJS 
   - Tailwind CSS
-  - Method Override
-
-- **Additional Tools:**  
-  - Nodemon
-  - PostCSS
-  - Autoprefixer
 
 ## Next Steps / Future Enhancements
 
@@ -50,11 +44,6 @@ Habit Tracker is a full-stack web application built on the MEN stack (MongoDB, E
 - **Notifications & Reminders:**  
   Integrate email or push notifications to remind users to check in on their habits.
 
-## Attributions
-
-- [Tailwind CSS](https://tailwindcss.com/) for styling.
-- [Express.js](https://expressjs.com/) for the back-end framework.
-- [MongoDB](https://www.mongodb.com/) for the database.
 
 
 
