@@ -53,7 +53,6 @@ Habit Tracker is a full-stack web application built on the MEN stack (MongoDB, E
 ## Attributions
 
 - [Tailwind CSS](https://tailwindcss.com/) for styling.
-- [Tailwind UI](https://tailwindui.com/) for design inspiration. 
 - [Express.js](https://expressjs.com/) for the back-end framework.
 - [MongoDB](https://www.mongodb.com/) for the database.
 
