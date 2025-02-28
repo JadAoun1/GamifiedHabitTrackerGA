@@ -17,7 +17,6 @@ const passUserToView = require('./middleware/pass-user-to-view.js');
 const authController = require('./controllers/auth.js');
 const goalsController = require('./controllers/goals');
 const habitsController = require('./controllers/habits.js');
-const port = process.env.PORT || '3000';
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -71,6 +70,7 @@ app.use(isSignedIn); // All routes below require a signed-in user
 // Mount habits controller so that it handles routes under /habits
 app.use('/habits', habitsController);
 
-app.listen(port, () => {
-  console.log(`The express app is ready on port ${port}!`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
