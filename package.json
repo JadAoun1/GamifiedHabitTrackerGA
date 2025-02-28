@@ -6,7 +6,8 @@
   "scripts": {
     "tailwind:build": "tailwindcss -i ./public/css/tailwind.css -o ./public/css/styles.css --watch",
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "heroku-postbuild": "npm rebuild bcrypt --build-from-source"
   },
   "repository": {
     "type": "git",
